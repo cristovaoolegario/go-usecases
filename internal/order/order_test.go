@@ -56,3 +56,21 @@ func TestGivenValidParams_WhenNewOrderIsCalled_ThenShouldReceiveOrderWithAllPara
 		t.Errorf("Should not have returned an error, got %s", isValid.Error())
 	}
 }
+
+func TestGivenAPriceAndTax_WhenCalculatePriceIsCalled_ThenShouldSetFinalPrice(t *testing.T) {
+	order, err := NewOrder("123", 10.0, 2.0)
+
+	if err != nil {
+		t.Errorf("Should not thrown an error, got %s", err.Error())
+	}
+
+	err = order.CalculateFinalPrice()
+
+	if err != nil {
+		t.Errorf("Should not thrown an error, got %s", err.Error())
+	}
+
+	if order.FinalPrice != 12.0 {
+		t.Errorf("Expected final price to be 12.0, got %b", order.FinalPrice)
+	}
+}
