@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 
-	entity "github.com/cristovaoolegario/go-usecases/internal/order"
+	entity "github.com/cristovaoolegario/go-usecases/internal/order/entity"
 )
 
 type OrderRepository struct {

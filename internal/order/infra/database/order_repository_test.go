@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"testing"
 
-	entity "github.com/cristovaoolegario/go-usecases/internal/order"
+	entity "github.com/cristovaoolegario/go-usecases/internal/order/entity"
 	"github.com/stretchr/testify/suite"
 
 	_ "github.com/mattn/go-sqlite3"
