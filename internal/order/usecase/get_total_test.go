@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type CalculatePriceUseCaseTestSuite struct {
+type GetTotalUseCaseTestSuite struct {
 	suite.Suite
 	OrderRepository entity.OrderRepositoryInterface
 	Db              *sql.DB
 }
 
-func (suite *CalculatePriceUseCaseTestSuite) SetupSuite() {
+func (suite *GetTotalUseCaseTestSuite) SetupSuite() {
 	db, err := sql.Open("sqlite3", ":memory:")
 	suite.NoError(err)
 	db.Exec("CREATE TABLE orders (id varchar(255) NOT NULL, price float NOT NULL, tax float NOT NULL, final_price float NOT NULL, PRIMARY KEY (id))")
@@ -23,28 +23,21 @@ func (suite *CalculatePriceUseCaseTestSuite) SetupSuite() {
 	suite.OrderRepository = database.NewOrderRepository(db)
 }
 
-func (suite *CalculatePriceUseCaseTestSuite) TearDownTest() {
+func (suite *GetTotalUseCaseTestSuite) TearDownTest() {
 	suite.Db.Close()
 }
 
-func (suite *CalculatePriceUseCaseTestSuite) TestCalculateFinalPrice() {
+func (suite *GetTotalUseCaseTestSuite) TestGetTotal() {
 	order, err := entity.NewOrder("123", 10.0, 2.0)
 	suite.NoError(err)
-	order.CalculateFinalPrice()
-
-	calculateFinalPriceInput := OrderInputDTO{
-		ID:    order.ID,
-		Price: order.Price,
-		Tax:   order.Tax,
-	}
-
-	calculateFinalPriceUseCase := NewCalculateFinalPriceUseCase(suite.OrderRepository)
-	output, err := calculateFinalPriceUseCase.Execute(calculateFinalPriceInput)
+	err = suite.OrderRepository.Save(order)
 	suite.NoError(err)
 
-	suite.Equal(order.ID, output.ID)
-	suite.Equal(order.Price, output.Price)
-	suite.Equal(order.Tax, output.Tax)
-	suite.Equal(order.FinalPrice, output.FinalPrice)
+	getTotalUseCase := NewGetTotalUseCase(suite.OrderRepository)
+
+	output, err := getTotalUseCase.Execute()
+	suite.NoError(err)
+
+	suite.Equal(1, output.Total)
 
 }
