@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/cristovaoolegario/go-usecases/internal/order/infra/database"
 	"github.com/cristovaoolegario/go-usecases/internal/order/usecase"
@@ -41,5 +42,6 @@ func main() {
 		}
 		msg.Ack(false)
 		fmt.Println(outputDTO)
+		time.Sleep(500 * time.Millisecond)
 	}
 }
