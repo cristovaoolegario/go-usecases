@@ -7,3 +7,10 @@ install-hooks:
 
 create-db:
 	sqlite3 orders.db ".read ./tools/create-db.sql"
+
+tests:
+	go clean -testcache
+	go test -v ./...
+
+run:
+	docker-compose up -d
