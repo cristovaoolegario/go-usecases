@@ -13,7 +13,7 @@ To run this this project, you'll need to have installed:
 
 ## How to setup the project
 
-This command will create the local database called `orders.db` and install the git hooks.
+This command will create the local database called `orders.sqlite` and install the git hooks.
 
 ```shell
 make setup

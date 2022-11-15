@@ -1,4 +1,4 @@
-CREATE TABLE orders
+CREATE TABLE IF NOT EXISTS orders
 (
      id          VARCHAR(255) NOT NULL,
      price       FLOAT NOT NULL,
