@@ -27,7 +27,17 @@ This project was build based in a series of three videos from and event called `
 - [Second video](https://youtu.be/4yNdsgUTQNw)
 - [Third video](https://youtu.be/x1q-FsIS30s)
 
-Will create a diagram to explain the project better.
+### Project diagram
+
+```mermaid
+sequenceDiagram
+Producer->>Consumer: Produce use case messages
+loop Consume messages
+    Consumer->>Consumer: Process use cases
+end
+Note right of Producer: Messages sent thought rabbitmq queue!
+Consumer->>Sqlite Database: Persist processed data!
+```
 
 ## How to run tests
 
