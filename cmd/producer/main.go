@@ -17,7 +17,7 @@ func Publish(ch *amqp.Channel, order entity.Order) error {
 		return err
 	}
 	err = ch.Publish(
-		"amq.direct",
+		"orders",
 		"",
 		false,
 		false,
