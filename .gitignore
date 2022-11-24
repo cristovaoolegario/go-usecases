@@ -16,3 +16,11 @@
 
 #Database file
 orders.sqlite
+
+# Log files
+./logs
+output.producer.log
+output.consumer.log
+server
+error.consumer.log
+error.producer.log
