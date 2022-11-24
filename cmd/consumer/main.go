@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/cristovaoolegario/go-usecases/internal/order/infra/database"
@@ -28,17 +29,28 @@ func main() {
 	}
 	defer ch.Close()
 	out := make(chan amqp.Delivery)
-	forever := make(chan bool)
 	go rabbitmq.Consume(ch, out)
 
 	workersAmount := 5
-	for i := 0; i < workersAmount; i++{
+	for i := 0; i < workersAmount; i++ {
 		go worker(out, &uc, i)
-	} 	
-	<-forever
+	}
+
+	http.HandleFunc("/total", func(w http.ResponseWriter, r *http.Request) {
+		getTotalUC := usecase.GetTotalUseCase{OrderRepository: repo}
+		total, err := getTotalUC.Execute()
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+		}
+		json.NewEncoder(w).Encode(total)
+	})
+
+	http.ListenAndServe(":8080", nil)
+
 }
 
-func worker(deliveryMessage <- chan amqp.Delivery, uc *usecase.CalculateFinalPriceUseCase, workerID int){
+func worker(deliveryMessage <-chan amqp.Delivery, uc *usecase.CalculateFinalPriceUseCase, workerID int) {
 	for msg := range deliveryMessage {
 		var inputDTO usecase.OrderInputDTO
 		err := json.Unmarshal(msg.Body, &inputDTO)
