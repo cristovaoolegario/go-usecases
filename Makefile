@@ -44,3 +44,6 @@ kill:
 
 build-image:
 	docker build -t cristovaoolegario/go-usecases:latest -f Dockerfile.prod .
+
+open:
+	open http://localhost:3000 http://localhost:15672 http://localhost:8080/total 
